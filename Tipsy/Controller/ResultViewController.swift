@@ -15,13 +15,13 @@ class ResultViewController: UIViewController {
     
     var splitTotal: Double?
     var split: Int?
-    var percentageLabel: String?
+    var tip: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         totalLabel.text = String(format: "%.2f", splitTotal ?? 0.0)
-        settingsLabel.text = "Split between \(split ?? 2) people, with \(percentageLabel ?? "0%") tip."
+        settingsLabel.text = "Split between \(split!) people, with \(tip!)% tip."
     }
     
     @IBAction func recalculatePressed(_ sender: Any) {

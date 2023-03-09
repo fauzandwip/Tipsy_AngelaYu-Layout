@@ -11,46 +11,45 @@ import UIKit
 struct CalculatorBrain {
     var tipsy: Tipsy?
     var totalSplit = 0.0
-    var split = 2
+    var numberOfPeople = 2
+    var tip = 0.0
     
     func getTotalSplit() -> Double {
         return totalSplit
     }
     
     func getSplit() -> Int {
-        return split
+        return numberOfPeople
     }
-    func getPercentageLabel() -> String {
-        return tipsy?.percentageLabel ?? "0%"
-    }
-    
-    mutating func changeSplit(split: Double) {
-        self.split = Int(split)
+    func getTip() -> Int {
+        return Int(tip * 100)
     }
     
-    mutating func changeTip(percent: String, zero: UIButton, ten: UIButton, twenty: UIButton) {
+    mutating func changeSplit(numberOfPeople: Double) {
+        self.numberOfPeople = Int(numberOfPeople)
+    }
+    
+    mutating func changeTip(sender: UIButton, zero: UIButton, ten: UIButton, twenty: UIButton) {
         
         zero.isSelected = false
         ten.isSelected = false
         twenty.isSelected = false
+        sender.isSelected = true
         
-        if percent == "0%" {
-            zero.isSelected = true
-            tipsy = Tipsy(totalSplit: totalSplit, split: split, percentage: 0, percentageLabel: "0%")
-        } else if percent == "10%" {
-            ten.isSelected = true
-            tipsy = Tipsy(totalSplit: totalSplit, split: split, percentage: 0.1, percentageLabel: "10%")
-        } else {
-            twenty.isSelected = true
-            tipsy = Tipsy(totalSplit: totalSplit, split: split, percentage: 0.2, percentageLabel: "20%")
-        }
+        let buttonTitle = sender.currentTitle!
+        let buttonTitleMinusPercentSign = String(buttonTitle.dropLast())
+        let buttonTitleAsNumber = Double(buttonTitleMinusPercentSign)!
+        tip = buttonTitleAsNumber / 100
+        
     }
     
-    mutating func calculateSplit(billTextField: UITextField, splitNumberLabel: UILabel) {
-        let billValue = Double(billTextField.text ?? "0.0") ?? 0.0
-        let splitNumber = Double(splitNumberLabel.text ?? "2") ?? 2
-        let splitBill = billValue * (1 + (tipsy?.percentage ?? 0.0)) / splitNumber
+    mutating func calculateSplit(billTextField: UITextField) {
+        let billValue = Double(billTextField.text!)!
+//        let splitNumber = Double(splitNumberLabel.text ?? "2") ?? 2
+        let splitBill = billValue * (1 + (tip)) / Double(numberOfPeople)
 
         totalSplit = splitBill
+        
+        tipsy = Tipsy(totalSplit: totalSplit, split: numberOfPeople, tip: tip)
     }
 }

@@ -10,6 +10,5 @@
 struct Tipsy {
     let totalSplit: Double?
     let split: Int?
-    let percentage: Double?
-    let percentageLabel: String?
+    let tip: Double?
 }

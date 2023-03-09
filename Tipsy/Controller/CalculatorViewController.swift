@@ -19,20 +19,20 @@ class CalculatorViewController: UIViewController {
     var calculatorBrain = CalculatorBrain()
     
     @IBAction func tipChanged(_ sender: UIButton) {
-        let percent = sender.currentTitle ?? "0%"
         
-        calculatorBrain.changeTip(percent: percent, zero: zeroPctButton, ten: tenPctButton, twenty: twentyPctButton)
+        calculatorBrain.changeTip(sender: sender, zero: zeroPctButton, ten: tenPctButton, twenty: twentyPctButton)
     }
     
     @IBAction func stepperValueChanged(_ sender: UIStepper) {
         let splitValue = sender.value
+        
         splitNumberLabel.text = String(format: "%.0f", splitValue)
-        calculatorBrain.changeSplit(split: splitValue)
+        calculatorBrain.changeSplit(numberOfPeople: splitValue)
     }
     
     @IBAction func calculatePressed(_ sender: Any) {
         
-        calculatorBrain.calculateSplit(billTextField: billTextField, splitNumberLabel: splitNumberLabel)
+        calculatorBrain.calculateSplit(billTextField: billTextField)
         
         self.performSegue(withIdentifier: "goToResult", sender: self)
     }
@@ -42,7 +42,7 @@ class CalculatorViewController: UIViewController {
             let resultVC = segue.destination as! ResultViewController
             resultVC.splitTotal = calculatorBrain.getTotalSplit()
             resultVC.split = calculatorBrain.getSplit()
-            resultVC.percentageLabel = calculatorBrain.getPercentageLabel()
+            resultVC.tip = calculatorBrain.getTip()
         }
     }
     
